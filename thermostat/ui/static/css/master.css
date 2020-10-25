@@ -1,0 +1,208 @@
+@font-face {
+	font-family: 'default';
+	src: url('../fonts/Komika_Hand.ttf') format('truetype');
+}
+
+body {
+	font-family: 'default';
+	font-size: 100%;
+	color: #00e6e6;
+	background-color: #0d0d0d;
+}
+
+#header-wrapper {
+	text-align: center;
+}
+
+#dtm-wrapper {
+	align-items: center;
+	float: left;
+}
+
+#short-clock {
+	align-content: center;
+}
+
+#long-clock {
+align-content: center;
+}
+
+#date {
+	align-items: center;
+}
+
+#long-date {
+	align-items: center;
+}
+
+#title {
+	align-items: center;
+	float: left;
+}
+
+/*
+#weather-wrapper {
+display: inline;
+}
+
+#high-low {
+display: inline;
+}*/
+
+.row::after {
+	content: "";
+	clear: both;
+	display: table;
+}
+
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
+
+*[class^='col-'] {
+	float: left;
+	padding: 15px;
+	/*    border: 1px solid red;*/
+}
+
+
+.xsm-txt {
+	font-size: .75em;
+}
+
+.sm-txt {
+	font-size: .875em;
+	letter-spacing: 1px;
+}
+
+.md-txt {
+	font-size: 1.125em;
+	letter-spacing: 3px;
+}
+
+.lg-txt {
+	font-size: 1.5em;
+	letter-spacing: 4px;
+}
+
+.xlg-txt {
+	font-size: 2em;
+	letter-spacing: 5px;
+}
+
+.xxlg-txt {
+	font-size: 2.625em;
+	letter-spacing: 6px;
+}
+
+.jumbo-txt {
+	font-size: 3.5em;
+	letter-spacing: 7px;
+}
+
+.xjumbo-txt {
+	font-size: 4.5em;
+	letter-spacing: 9px;
+}
+
+.xxjumbo-txt {
+	font-size: 5.5em;
+	letter-spacing: 11px;
+}
+
+.massive-txt {
+	font-size: 8.6em;
+	letter-spacing: 13px;
+}
+
+.ctr {
+	text-align: center;
+}
+
+.left {
+	text-align: left;
+}
+
+.right {
+	text-align: right;
+}
+
+.footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 1rem;
+	text-align: center;
+}
+
+/*@media all and (max-width: 810px) {
+	#short-clock {
+		font-size: 4.5em;
+		letter-spacing: 9px;
+	}
+	#long-date {
+		font-size: 1.5em;
+		letter-spacing: 4px;
+	}
+}*/
+
+/*.login {
+ w i*dth: 400px;
+ background-color: #ffffff;
+ box-shadow: 0 0 9px 0 rgba(0, 0, 0, 0.3);
+ margin: 100px auto;
+ }
+ .login h1 {
+ text-align: center;
+ color: #5b6574;
+ font-size: 24px;
+ padding: 20px 0 20px 0;
+ border-bottom: 1px solid #dee0e4;
+ }
+ .login form {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: center;
+ padding-top: 20px;
+ }
+ .login form label {
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 50px;
+ height: 50px;
+ background-color: #3274d6;
+ color: #ffffff;
+ }
+ .login form input[type="password"], .login form input[type="text"] {
+ width: 310px;
+ height: 50px;
+ border: 1px solid #dee0e4;
+ margin-bottom: 20px;
+ padding: 0 15px;
+ }
+ .login form input[type="submit"] {
+ width: 100%;
+ padding: 15px;
+ margin-top: 20px;
+ background-color: #3274d6;
+ border: 0;
+ cursor: pointer;
+ font-weight: bold;
+ color: #ffffff;
+ transition: background-color 0.2s;
+ }
+ .login form input[type="submit"]:hover {
+ background-color: #2868c7;
+ transition: background-color 0.2s;
+ }*/

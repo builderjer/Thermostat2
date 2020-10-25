@@ -1,0 +1,100 @@
+#left-wrapper {
+	height: 100%;
+	border-right: 5px solid #00e6e6;
+}
+
+#right-wrapper {
+	height: 100%;
+	border-left: 5px solid #00e6e6;
+}
+
+#forecast-wrapper {
+	height: 50%;
+	border-bottom: 5px solid #00e6e6;
+	position: relative;
+}
+
+#HL-lable #current-lable {
+	margin-top: 5%;
+}
+
+#temp #currentTemp{
+	padding-bottom: 10%;
+}
+
+#tempHigh #tempLow {
+	padding: 15px;
+}
+
+#dailySummary #currentSummary{
+	padding-bottom: 5%;
+}
+
+#current-wrapper {
+	height: 50%;
+	margin-top: 10%;
+	position: relative;
+}
+
+/*#inside-wrapper {
+	align-items: center;
+	position: absolute;
+}*/
+/*#currentWeather {
+	margin-top: 10%;
+}*/
+
+/*#currentIcon {
+	margin-top: 5%;
+}
+
+#weatherIcon {
+	margin-top: 5%;
+}*/
+
+/*#currentTemp {
+	padding: 15%;
+}*/
+
+#indoor-temp {
+	margin-top: 30%;
+}
+
+.lower {
+	position: absolute;
+	bottom: 10%;
+	right: 0;
+	left: 0;
+	text-align: center;	
+}
+
+.lg-img {
+	width: 20%;
+	height: 20%;
+}
+
+#right-wrapper {
+display: flex;
+flex-direction: column;
+justify-content: space-around;
+}
+
+#desired-temp-wrapper #control-btns {
+	display: block;
+	margin-top: 10%;
+	margin-bottom: 10%;
+	
+}
+
+#up-button #down-button {
+	margin-top: 10%;
+	margin-bottom: 10%;
+}
+
+#adj-up-image {
+	margin-bottom: 10%;
+}
+
+#adj-down-image {
+	margin-top: 10%;
+}

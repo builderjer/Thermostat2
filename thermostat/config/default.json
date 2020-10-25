@@ -1,0 +1,119 @@
+{
+    "MIN_VERSION": "0.0.3",
+    "USER_DIR": ".config/thermostat",
+    "USER_CONFIG": "thermostat.json",
+    "MQTT": {
+        "PATH": "",
+        "HOST": "",
+        "PORT": "",
+        "USER": "",
+        "PASSWORD": ""
+    },
+    "OUTPUT_FORMAT": "F",
+    "DEFAULT_STATE": "OFF",
+    "DEFAULT_MODE": "AUTO",
+    "SENSORS": {
+        "HALLWAY": [
+            "LM35",
+            3
+        ],
+        "MASTERBED": [
+            "LM35",
+            4
+        ],
+        "LIVINGROOM": [
+            "LM35",
+            5
+        ]
+    },
+    "SENSOR_GROUPS": {
+        "HOUSE": [
+            "HALLWAY",
+            "MASTERBED",
+            "LIVINGROOM"
+        ]
+    },
+    "TEMP_SETTINGS": {
+        "DEFAULT_TEMP": 70,
+        "HEAT": {
+            "DEFAULT_TEMP": 69,
+            "TIME_SETTINGS": {
+                "TIME_ONE": [
+                    "0600",
+                    "0730",
+                    2
+                ],
+                "TIME_TWO": [
+                    "0730",
+                    "1830",
+                    0
+                ],
+                "TIME_THREE": [
+                    "1830",
+                    "2030",
+                    2
+                ],
+                "TIME_FOUR": [
+                    "2030",
+                    "0600",
+                    0
+                ]
+            },
+            "OCCUPIED_SETTINGS": {
+                "HOME": [
+                    "0",
+                    "0",
+                    1
+                ],
+                "AWAY": [
+                    "0",
+                    "0",
+                    -3
+                ]
+            }
+        },
+        "COOL": {
+            "DEFAULT_TEMP": 76,
+            "TIME_SETTINGS": {
+                "TIME_ONE": [
+                    "0600",
+                    "0730",
+                    -2
+                ],
+                "TIME_TWO": [
+                    "0730",
+                    "1830",
+                    0
+                ],
+                "TIME_THREE": [
+                    "1830",
+                    "2030",
+                    -2
+                ],
+                "TIME_FOUR": [
+                    "2030",
+                    "0600",
+                    0
+                ]
+            },
+            "OCCUPIED_SETTINGS": {
+                "HOME": [
+                    "0",
+                    "0",
+                    0
+                ],
+                "AWAY": [
+                    "0",
+                    "0",
+                    3
+                ]
+            }
+        }
+    },
+
+    "WIFI": {
+    },
+    "WEATHER": {
+        "SAVE_FILE": "weather/forecast.json",
+    }
+}
