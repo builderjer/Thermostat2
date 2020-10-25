@@ -359,7 +359,7 @@ class Thermostat(hvactools.TimedObject):
                 time.sleep(.1)
             average = sum(tempArray) / len(tempArray)
             # average = tSum / r
-            if average > 50:
+            if 30 < average > 50:
                 tSensor.tempC = tSensor.tempC
             else:
                 tSensor.tempC = average

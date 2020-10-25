@@ -12,6 +12,11 @@
     "OUTPUT_FORMAT": "F",
     "DEFAULT_STATE": "OFF",
     "DEFAULT_MODE": "AUTO",
+    "HVAC"								: {
+      "HEAT_PINS"					: [4, 5],
+      "VENT_PINS"					: [2, 3],
+      "AC_PINS"						: [6, 7]
+    },
     "SENSORS": {
         "HALLWAY": [
             "LM35",
@@ -114,6 +119,6 @@
     "WIFI": {
     },
     "WEATHER": {
-        "SAVE_FILE": "weather/forecast.json",
+        "SAVE_FILE": "weather/forecast.json"
     }
 }

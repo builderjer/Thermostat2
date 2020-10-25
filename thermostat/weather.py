@@ -27,11 +27,10 @@ class WeatherForecast(hvactools.TimedObject):
         try:
             with urllib.request.urlopen(jsonFile) as url:
                 data = json.loads(url.read().decode())
-                self.__lastCheck = datetime.datetime.now()
                 self.LOGGER.debug("Weather forecast downloaded from darksky")
+                self.forecast = data
+                self.lastCheck = datetime.datetime.now()
         except Exception as e:
             self.LOGGER.error("Could not download weather.  Error code {}".format(e))
             data = None
     #         return data
-        self.forecast = data
-        self.__lastCheck = datetime.datetime.now()

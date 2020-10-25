@@ -74,8 +74,8 @@ while True:
 		# Check the weather every "delay" minutes
 		# We need the weather to set the state of the thermostat
 		if WEATHER.shouldUpdate():
-			print("Weather needs a break")
-			# WEATHER.update(WEATHER.url)
+			# print("Weather needs a break")
+			WEATHER.update(WEATHER.url)
 		# Set the state of the thermostat every "delay" minutes default => 1440 (one day)
 		if HVAC.thermostat.shouldUpdate():
 			try:
@@ -84,7 +84,6 @@ while True:
 				LOGGER.error("Error updating thermostat  {}".format(e))
 				 # BUG:  Hack for if the weather fails
 				HVAC.thermostat.update((HVAC.thermostat.maxTemp, HVAC.thermostat.minTemp, hvactools.checkTimeOfYear()))
-
 		# See if there is anybody home
 		# Only check every so often => WIFI.delay
 		if WIFI.shouldUpdate():

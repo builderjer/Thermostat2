@@ -24,12 +24,7 @@ class TimedObject():
         self.__lastCheck = newTime
 
     def shouldUpdate(self):
-        # try:
-        # dt = datetime.datetime.now()
-        # lc = self.lastCheck
-        # dtd = datetime.timedelta(minutes=self.delay)
         try:
-            # if dt > lc + dtd:
             if datetime.datetime.now() > self.lastCheck + datetime.timedelta(minutes=self.delay):
                 return True
             return False

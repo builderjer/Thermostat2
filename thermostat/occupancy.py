@@ -77,7 +77,7 @@ class WiFi(Occupancy, hvactools.TimedObject):
         else:
             self.__home = None
         self.LOGGER.debug(self.__home)
-        self.__lastCheck = datetime.datetime.now()
+        # self.lastCheck = datetime.datetime.now()
 
     def update(self, wifiAddresses):
         if wifiAddresses:
