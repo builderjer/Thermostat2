@@ -120,7 +120,7 @@ class HVAC:
             self.LOGGER.error("Cannot turn on {}. Not a valid object".format(componant))
             return
 
-        self.LOGGER.debug("Turned {} on".format(componant))
+        self.LOGGER.info("Turned {} on".format(componant))
         return True
 
     def turnOff(self, componant):
@@ -183,7 +183,7 @@ class HVAC:
             self.LOGGER.error("Cannot turn off {}. Not a valid object".format(componant))
             return
 
-        self.LOGGER.debug("Turned {} off".format(componant))
+        self.LOGGER.info("Turned {} off".format(componant))
         return True
 
 class Thermostat(hvactools.TimedObject):
@@ -351,18 +351,23 @@ class Thermostat(hvactools.TimedObject):
             r = 10
             tempArray = []
             # tSum = 0
+            self.LOGGER.debug("Updating sensor {}".format(tSensor.name))
             for reading in range(r):
                 value, timeStamp = board.analog_read(tSensor.controlPin)
+                self.LOGGER.debug(value)
                 if value:
                     tempArray.append(value)
                 # tSum += value
                 time.sleep(.1)
-            average = sum(tempArray) / len(tempArray)
+            try:
+                average = sum(tempArray) / len(tempArray)
             # average = tSum / r
-            if average > 50:
-                tSensor.tempC = tSensor.tempC
-            else:
-                tSensor.tempC = average
+                if 30 < average < 60:
+                    tSensor.tempC = average
+                else:
+                    tSensor.tempC = tSensor.tempC
+            except ZeroDivisionError as e:
+                self.LOGGER.error("Sensor {} is having an error".format(tSensor.name))
 
     def getTemp(self, area):
         for tSensor in self.tempSensors:
@@ -446,7 +451,7 @@ class Thermostat(hvactools.TimedObject):
         self.lastCheck = datetime.datetime.now()
 
 class Heater(hvactools.TimedObject):
-    def __init__(self, delay=2):
+    def __init__(self, delay=.25):
         self.LOGGER = logging.getLogger("__main__.hvac.Heater")
         hvactools.TimedObject.__init__(self, delay)
         self.__controlPins = None
