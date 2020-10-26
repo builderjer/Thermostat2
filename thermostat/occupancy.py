@@ -71,7 +71,7 @@ class WiFi(Occupancy, hvactools.TimedObject):
                         if person not in tempList:
                             tempList.append(person)
                 except subprocess.CalledProcessError as e:
-                    self.LOGGER.error("{} at {} not reachable".format(person, hName + domainName))
+                    self.LOGGER.debug("{} at {} not reachable".format(person, hName + domainName))
         if tempList:
             self.__home = tempList
         else:

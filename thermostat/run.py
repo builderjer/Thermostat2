@@ -7,6 +7,7 @@ import datetime
 import time
 import logging
 from logging.config import fileConfig
+import signal
 
 from pymata4 import pymata4
 
@@ -56,9 +57,23 @@ WEATHER = weather.WeatherForecast(SETTINGS["WEATHER"]["URL"])
 # Setup the WiFi ooccupancy detector
 WIFI = occupancy.WiFi(SETTINGS["WIFI"])
 
+MQTT = hvactools.MQTTClient(name="Thermostat")
+# MQTT.start()
+
 # Give the thermostat a default temp to work with
 HVAC.thermostat.defaultTemp = SETTINGS["TEMP_SETTINGS"]["DEFAULT_TEMP"]
 HVAC.turnOff("ALL")
+
+def shutdown(sig, frame):
+	print(sig, frame)
+	if HVAC.board:
+		HVAC.board.shutdown()
+	# MQTT.stop()
+	sys.exit()
+
+signal.signal(signal.SIGTERM, shutdown)
+signal.signal(signal.SIGINT, shutdown)
+
 while True:
 	####################################################
 	# This happens when the thermostat is in AUTO mode
@@ -70,12 +85,15 @@ while True:
 		# group that the thermostat will monitor
 		houseTemp = round(HVAC.thermostat.getTemp("HOUSE"))
 		LOGGER.debug("House temp is {}".format(houseTemp))
+		# MQTT.publish("ziggy/climate/temp/house", houseTemp)
 
 		# Check the weather every "delay" minutes
 		# We need the weather to set the state of the thermostat
 		if WEATHER.shouldUpdate():
 			# print("Weather needs a break")
 			WEATHER.update(WEATHER.url)
+			LOGGER.info("Temp outside is {}".format(WEATHER.forecast["currently"]["temperature"]))
+			# MQTT.publish("ziggy/climate/temp/outside", WEATHER.forecast["currently"]["temperature"])
 		# Set the state of the thermostat every "delay" minutes default => 1440 (one day)
 		if HVAC.thermostat.shouldUpdate():
 			try:
@@ -84,10 +102,13 @@ while True:
 				LOGGER.error("Error updating thermostat  {}".format(e))
 				 # BUG:  Hack for if the weather fails
 				HVAC.thermostat.update((HVAC.thermostat.maxTemp, HVAC.thermostat.minTemp, hvactools.checkTimeOfYear()))
+			LOGGER.info("Thermostat mode updated to {}".format(HVAC.thermostat.state))
 		# See if there is anybody home
 		# Only check every so often => WIFI.delay
 		if WIFI.shouldUpdate():
 			WIFI.update(SETTINGS["WIFI"])
+			LOGGER.info("People home {}".format(WIFI.home))
+			# MQTT.publish("ziggy/occupancy/people", str(WIFI.home))
 
 		# Set the desired temperature of the house
 		if HVAC.thermostat.state != "OFF":
@@ -106,10 +127,15 @@ while True:
 				# I put the heater/vent/ac on a timer so it does not go on and off
 				# if there is a glitch in the temp sensors
 				if HVAC.heater.shouldUpdate():
-					LOGGER.debug("Been on for a while")
-					HVAC.heater.update()
+					# Do this to make sure it wasnt a rogue reading
+					if round(HVAC.thermostat.getTemp("HOUSE")) <= HVAC.thermostat.desiredTemp:
+						continue
+					else:
+						LOGGER.debug("Been on for a while")
+						HVAC.heater.update()
 
-					HVAC.turnOff("HEAT")
+						HVAC.turnOff("HEAT")
+						LOGGER.info("House temp is {}".format(houseTemp))
 
 			elif HVAC.thermostat.state == "COOL" and HVAC.ac.state == "OFF":
 				HVAC.turnOn("COOL")
@@ -123,10 +149,14 @@ while True:
 				# HVAC.heater.update()
 				LOGGER.debug("Heater is off")
 				if HVAC.heater.shouldUpdate():
-					LOGGER.debug("been off for a while")
-					HVAC.heater.update()
+					if round(HVAC.thermostat.getTemp("HOUSE")) >= HVAC.thermostat.desiredTemp:
+						continue
+					else:
+						LOGGER.debug("been off for a while")
+						HVAC.heater.update()
 
-					HVAC.turnOn("HEAT")
+						HVAC.turnOn("HEAT")
+						LOGGER.info("House temp is {}".format(houseTemp))
 
 			elif HVAC.thermostat.state == "COOL" and HVAC.ac.state == "ON":
 				HVAC.turnOff("COOL")

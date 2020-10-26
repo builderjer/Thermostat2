@@ -6,6 +6,9 @@ import json
 import pathlib
 from pathlib import Path
 import datetime
+import time
+
+import paho.mqtt.client as mqtt
 
 LOGGER = logging.getLogger("__main__.tools")
 LOGGER.debug("Loading hvactools")
@@ -38,6 +41,30 @@ class TimedObject():
         This function should be overridden in Child class
         """
         pass
+
+class MQTTClient():
+    def __init__(self, name=None, host="localhost", port=1883, keepalive=60, bind_address=""):
+        self.name = name
+        self.client = mqtt.Client(self.name)
+        # self.client.on_connect = self.onConnect
+        self.client.connect(host, port, keepalive, bind_address)
+        # self.client.loop_start()
+        # time.sleep(1)
+
+    def onConnect(self, client, userdata, flags, rc):
+        if rc == 0:
+            print("connected to mqtt")
+
+    def start(self):
+        self.client.loop_start()
+        time.sleep(1)
+
+    def stop(self):
+        self.client.loop_stop()
+        time.sleep(1)
+
+    def publish(self, topic, message, qos=1, retain=True):
+        self.client.publish(topic, message, qos, retain)
 
 def loadSettings(jsonFile):
     # Convert filename to python path

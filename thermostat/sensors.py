@@ -107,7 +107,7 @@ class TempSensor(Sensor):
 			self.LOGGER.debug("tempC: {}  tempF: {}".format(self.tempC, tF))
 			return tF
 		else:
-			self.LOGGER.error("No tempC to convert")
+			self.LOGGER.error("No tempC to convert sensor {}".format(self.name))
 			return None
 
 class PresenceDetector:
