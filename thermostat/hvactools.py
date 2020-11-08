@@ -15,7 +15,8 @@ LOGGER.debug("Loading hvactools")
 
 class TimedObject():
     def __init__(self, delayTime):
-        self.delay = delayTime
+        self.defaultDelay = delayTime
+        self.delay = self.defaultDelay
         self.__lastCheck = None
 
     @property
@@ -45,15 +46,21 @@ class TimedObject():
 class MQTTClient():
     def __init__(self, name=None, host="localhost", port=1883, keepalive=60, bind_address=""):
         self.name = name
+        self.LOGGER = logging.getLogger("__main__.tools.MQTTClient")
         self.client = mqtt.Client(self.name)
+        self.client.on_connect = self.on_connect
+        self.client.on_message = self.on_message
+
+        self.desiredTemp = None
         # self.client.on_connect = self.onConnect
         self.client.connect(host, port, keepalive, bind_address)
         # self.client.loop_start()
         # time.sleep(1)
 
-    def onConnect(self, client, userdata, flags, rc):
+    def on_connect(self, client, userdata, flags, rc):
+        self.client.subscribe("ziggy/climate/temp/desired")
         if rc == 0:
-            print("connected to mqtt")
+            pass
 
     def start(self):
         self.client.loop_start()
@@ -65,6 +72,13 @@ class MQTTClient():
 
     def publish(self, topic, message, qos=1, retain=True):
         self.client.publish(topic, message, qos, retain)
+
+    def on_message(self, client, userdata, msg):
+        message = {}
+        if msg.topic == "ziggy/climate/temp/desired":
+            message = str(msg.payload.decode())
+            self.LOGGER.debug(message)
+            self.desiredTemp = message
 
 def loadSettings(jsonFile):
     # Convert filename to python path

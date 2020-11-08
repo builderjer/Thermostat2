@@ -18,10 +18,6 @@
       "AC_PINS"						: [6, 7]
     },
     "SENSORS": {
-        "HALLWAY": [
-            "LM35",
-            3
-        ],
         "MASTERBED": [
             "LM35",
             4
@@ -33,7 +29,6 @@
     },
     "SENSOR_GROUPS": {
         "HOUSE": [
-            "HALLWAY",
             "MASTERBED",
             "LIVINGROOM"
         ]
@@ -41,27 +36,32 @@
     "TEMP_SETTINGS": {
         "DEFAULT_TEMP": 70,
         "HEAT": {
-            "DEFAULT_TEMP": 69,
+            "DEFAULT_TEMP": 67,
             "TIME_SETTINGS": {
                 "TIME_ONE": [
-                    "0600",
+                    "0601",
                     "0730",
-                    2
+                    3
                 ],
                 "TIME_TWO": [
-                    "0730",
+                    "0731",
                     "1830",
                     0
                 ],
                 "TIME_THREE": [
-                    "1830",
+                    "1831",
                     "2030",
                     2
                 ],
                 "TIME_FOUR": [
-                    "2030",
-                    "0600",
+                    "2031",
+                    "2359",
                     0
+                ],
+                "TIME_FIVE": [
+                    "0000",
+                    "0600",
+                    -1
                 ]
             },
             "OCCUPIED_SETTINGS": {

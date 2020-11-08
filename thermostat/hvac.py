@@ -365,9 +365,16 @@ class Thermostat(hvactools.TimedObject):
                 if 30 < average < 60:
                     tSensor.tempC = average
                 else:
-                    tSensor.tempC = tSensor.tempC
+                    if tSensor.tempC:
+                        tSensor.tempC = tSensor.tempC
+                    # else:
+                    #     tSensor.tempC = (self.desiredTemp - 32) * (5/9)
+
+                        # (32°F − 32) × 5/9 = 0°C
             except ZeroDivisionError as e:
                 self.LOGGER.error("Sensor {} is having an error".format(tSensor.name))
+                # BIG hack to maybe help a None result?
+                tSensor.tempC = (self.desiredTemp - 32) * (5/9)
 
     def getTemp(self, area):
         for tSensor in self.tempSensors:
@@ -399,6 +406,10 @@ class Thermostat(hvactools.TimedObject):
 
     def update(self, conditionList):
         highTemp, lowTemp, timeOfYear = conditionList
+        # Reset the delay if different than the default delay
+        if self.delay != self.defaultDelay:
+            self.delay = self.defaultDelay
+
         if not timeOfYear:
             if highTemp > self.maxTemp + 10 and lowTemp < self.minTemp - 20:
                 self.LOGGER.debug("You must live in Colorado")
@@ -451,7 +462,7 @@ class Thermostat(hvactools.TimedObject):
         self.lastCheck = datetime.datetime.now()
 
 class Heater(hvactools.TimedObject):
-    def __init__(self, delay=.25):
+    def __init__(self, delay=2):
         self.LOGGER = logging.getLogger("__main__.hvac.Heater")
         hvactools.TimedObject.__init__(self, delay)
         self.__controlPins = None

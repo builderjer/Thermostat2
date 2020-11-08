@@ -14,7 +14,69 @@ class WeatherForecast(hvactools.TimedObject):
         hvactools.TimedObject.__init__(self, delay)
         self.url = url
         self.__forecast = None
+        self.__messages = []
 
+    @property
+    def messages(self):
+        return self.__messages
+
+    @messages.setter
+    def messages(self, data):
+        self.__messages = [
+        	# Current readings
+        	{
+        		"topic": "ziggy/weather/current/summary",
+        		"payload": data["currently"]["summary"],
+        		"qos": 1,
+        		"retain": True
+        		},
+        	{
+        		"topic": "ziggy/weather/current/icon",
+        		"payload": data["currently"]["icon"],
+        		"qos": 1,
+        		"retain": True
+        		},
+        	{
+        		"topic": "ziggy/weather/current/temp",
+        		"payload": data["currently"]["temperature"],
+        		"qos": 1,
+        		"retain": True
+        		},
+
+        	# Daily forecast
+        	{
+        		"topic": "ziggy/weather/daily/summary",
+        		"payload": data["daily"]["data"][0]["summary"],
+        		"qos": 1,
+        		"retain": True
+        		},
+        	{
+        		"topic": "ziggy/weather/daily/icon",
+        		"payload": data["daily"]["data"][0]["icon"],
+        		"qos": 1,
+        		"retain": True
+        		},
+        	{
+        		"topic": "ziggy/weather/daily/tempHigh",
+        		"payload": data["daily"]["data"][0]["temperatureHigh"],
+        		"qos": 1,
+        		"retain": True
+        		},
+        	{
+        		"topic": "ziggy/weather/daily/tempLow",
+        		"payload": data["daily"]["data"][0]["temperatureLow"],
+        		"qos": 1,
+        		"retain": True
+        		},
+
+        	# Weekly summary
+        	{
+        		"topic": "ziggy/weather/weekly/summary",
+        		"payload": data["daily"]["summary"],
+        		"qos": 1,
+        		"retain": True
+        	}
+        ]
     @property
     def forecast(self):
         return self.__forecast

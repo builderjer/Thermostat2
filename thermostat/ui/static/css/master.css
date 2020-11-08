@@ -40,6 +40,9 @@ align-content: center;
 	float: left;
 }
 
+#thermostat-state-wrapper {
+	display: inline;
+}
 /*
 #weather-wrapper {
 display: inline;

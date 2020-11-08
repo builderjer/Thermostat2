@@ -1,2 +1,7 @@
 pymata4
 paho-mqtt
+flask
+flask_mqtt
+flask_socketio
+flask_bootstrap
+eventlet

@@ -11,7 +11,10 @@
 #
 # It works for me
 
-if ! python3 -c 'import sys; assert sys.version_info >= (3,9)' > /dev/null; then
+# Pymata4 requires at least python 3.7  It will do a local install of 3.9 if
+# the minimum version is not found.
+
+if ! python3 -c 'import sys; assert sys.version_info >= (3,7)' > /dev/null; then
   if [ ! -d "Python-3.9.0" ]; then
     if [ ! -f "Python-3.9.0.tar.xz" ]; then
       wget https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tar.xz
