@@ -14,41 +14,43 @@
 # Pymata4 requires at least python 3.7  It will do a local install of 3.9 if
 # the minimum version is not found.
 
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
 if ! python3 -c 'import sys; assert sys.version_info >= (3,7)' > /dev/null; then
   if [ ! -d "Python-3.9.0" ]; then
     if [ ! -f "Python-3.9.0.tar.xz" ]; then
       wget https://www.python.org/ftp/python/3.9.0/Python-3.9.0.tar.xz
     fi
-    tar xfv $PWD/Python-3.9.0.tar.xz
-    rm $PWD/Python-3.9.0.tar.xz
+    tar xfv $DIR/Python-3.9.0.tar.xz
+    rm $DIR/Python-3.9.0.tar.xz
   fi
 
   # ls $PWD/Python-3.9.0/build
 
 
-  if [ ! -f "$PWD/Python-3.9.0/build/python" ]; then
+  if [ ! -f "$DIR/Python-3.9.0/build/python" ]; then
     cd Python-3.9.0
     mkdir build
     cd build
     ../configure
     make
-    cd $PWD
+    cd $DIR
   fi
-  python="$PWD/Python-3.9.0/build/python"
+  python="$DIR/Python-3.9.0/build/python"
 else
   python="python3"
 fi
 
-if [ ! -d $PWD/venv ]; then
-  $python -m venv ./venv
+if [ ! -d $HOME/.config/thermostat/venv ]; then
+  $python -m venv $HOME/.config/thermostat/venv
 fi
 
-. $PWD/venv/bin/activate
+. $HOME/.config/thermostat/venv/bin/activate
 
 pip install --upgrade pip
 
 pip install -r requirements.txt
 
-cd thermostat
-
-./run.py
+# cd thermostat
+#
+# ./run.py
