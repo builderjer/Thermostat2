@@ -410,6 +410,10 @@ class Thermostat(hvactools.TimedObject):
         if self.delay != self.defaultDelay:
             self.delay = self.defaultDelay
 
+        # Reset to AUTO mode if updating from MANUAL
+        if self.mode == "MANUAL":
+            self.mode = "AUTO"
+            
         if not timeOfYear:
             if highTemp > self.maxTemp + 10 and lowTemp < self.minTemp - 20:
                 self.LOGGER.debug("You must live in Colorado")
