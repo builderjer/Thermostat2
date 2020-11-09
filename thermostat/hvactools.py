@@ -46,10 +46,15 @@ class TimedObject():
 class MQTTClient():
     def __init__(self, name=None, host="localhost", port=1883, keepalive=60, bind_address=""):
         self.name = name
+        self.host = host
+        self.port = port
         self.LOGGER = logging.getLogger("__main__.tools.MQTTClient")
         self.client = mqtt.Client(self.name)
         self.client.on_connect = self.on_connect
+        self.client.on_disconnect = self.on_disconnect
         self.client.on_message = self.on_message
+
+        self.__enabled = False
 
         self.desiredTemp = None
         # self.client.on_connect = self.onConnect
@@ -57,10 +62,22 @@ class MQTTClient():
         # self.client.loop_start()
         # time.sleep(1)
 
+    @property
+    def enabled(self):
+        return self.__enabled
+
+    @enabled.setter
+    def enabled(self, value):
+        self.__enabled = value
+
     def on_connect(self, client, userdata, flags, rc):
+        self.enabled = True
         self.client.subscribe("ziggy/climate/temp/desired")
         if rc == 0:
             pass
+
+    def on_disconnect(self):
+        self.enabled = False
 
     def start(self):
         self.client.loop_start()
@@ -71,7 +88,10 @@ class MQTTClient():
         time.sleep(1)
 
     def publish(self, topic, message, qos=1, retain=True):
-        self.client.publish(topic, message, qos, retain)
+        if self.enabled:
+            self.client.publish(topic, message, qos, retain)
+        else:
+            self.LOGGER.error("MQTT server not connected at {} port {}".format(self.host, self.port))
 
     def on_message(self, client, userdata, msg):
         message = {}

@@ -49,6 +49,6 @@ pip install --upgrade pip
 
 pip install -r requirements.txt
 
-cd thermostat
-
-./run.py
+# cd thermostat
+#
+# ./run.py
