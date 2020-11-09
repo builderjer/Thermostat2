@@ -14,8 +14,30 @@ LOGGER = logging.getLogger("__main__.tools")
 LOGGER.debug("Loading hvactools")
 
 class TimedObject():
+    """
+    Used as a subclass for any object that needs something done on a schedule
+
+    :param => delayTime => An intiger in seconds describing how often to update
+
+    :properties
+        :private
+            __defaultDelay => Used to reset object timer to origional setting
+            __lastCheck => A datetime object to compare current time with
+        :public
+            delay => This can be changed by the user and resets to default after
+                the alloted time
+
+    :methods
+        shouldUpdate => Returns True if enough time has passed for the update
+        update => Override this function in the child class.
+            Commands to execute when the timer is up
+    """
+
     def __init__(self, delayTime):
-        self.defaultDelay = delayTime
+        """:param => delayTime => int in seconds used as the defalut delay time """
+
+        self.LOGGER = logging.getLogger("__main__.Tools.TimedObject")
+        self.__defaultDelay = delayTime
         self.delay = self.defaultDelay
         self.__lastCheck = None
 
@@ -27,13 +49,19 @@ class TimedObject():
     def lastCheck(self, newTime):
         self.__lastCheck = newTime
 
+    @property
+    def defaultDelay(self):
+        return self.__defaultDelay
+
     def shouldUpdate(self):
+        """Returns True if the delay time in seconds has passed.  Else returns False"""
         try:
             if datetime.datetime.now() > self.lastCheck + datetime.timedelta(minutes=self.delay):
                 return True
             return False
         except TypeError as e:
             if self.lastCheck == None:
+                self.lastCheck = datetime.datetime.now()
                 return True
         return False
 
@@ -98,7 +126,7 @@ class MQTTClient():
         if msg.topic == "ziggy/climate/temp/desired":
             message = str(msg.payload.decode())
             self.LOGGER.debug(message)
-            self.desiredTemp = message
+            self.desiredTemp = int(message)
 
 def loadSettings(jsonFile):
     # Convert filename to python path
