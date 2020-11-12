@@ -157,7 +157,14 @@ class HVAC:
             # I am using latching relays, so I will remove the power to it
             self.board.digital_write(self.heater.controlPins[1], 0)
             time.sleep(.25)
-
+            # BUG: Doesnt always shut off right, so ill do it again
+            time.sleep(1)
+            self.board.digital_write(self.heater.controlPins[1], 1)
+            time.sleep(.25)
+            # I am using latching relays, so I will remove the power to it
+            self.board.digital_write(self.heater.controlPins[1], 0)
+            time.sleep(.25)
+            
             self.heater.state = "OFF"
 
         elif componant.upper() == "COOL":
@@ -413,7 +420,7 @@ class Thermostat(hvactools.TimedObject):
         # Reset to AUTO mode if updating from MANUAL
         if self.mode == "MANUAL":
             self.mode = "AUTO"
-            
+
         if not timeOfYear:
             if highTemp > self.maxTemp + 10 and lowTemp < self.minTemp - 20:
                 self.LOGGER.debug("You must live in Colorado")
